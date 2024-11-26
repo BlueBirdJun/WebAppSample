@@ -7,20 +7,17 @@ using WebApp.Services.Implementation;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-//builder.Services.AddRazorPages();
-builder.Services.AddControllersWithViews();
 
-// Database context configuration
+builder.Services.AddControllersWithViews();
+// DB Connection
 builder.Services.AddDbContext<DbWebapplication01Context>(options => {
     options.UseSqlServer(builder.Configuration.GetConnectionString("SQLString"));
 });
 
-// Add classes from our services folder
+// Custom User Manager
 builder.Services.AddScoped<IUserService, UserService>();
 
-
-// Cookie Configuration
+// 쿠키 인증
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
     .AddCookie(Options =>
     {
@@ -28,7 +25,7 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
         Options.ExpireTimeSpan = TimeSpan.FromMinutes(20);
     });
 
-// Clear Cache (Avoid returning once you log out)
+// 캐시 지우기(로그아웃 후 반환 방지)
 builder.Services.AddControllersWithViews(options =>
 {
     options.Filters.Add(
@@ -45,16 +42,14 @@ var app = builder.Build();
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {
-    app.UseExceptionHandler("/Error");
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
+    app.UseExceptionHandler("/Error");    
     app.UseHsts();
 } 
+//순서 중요함
 app.UseHttpsRedirection();
 app.UseStaticFiles();
-
 app.UseRouting();
 app.UseAuthentication();
-
 app.UseAuthorization();
 
 app.MapControllerRoute(

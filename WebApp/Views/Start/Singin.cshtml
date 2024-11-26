@@ -28,11 +28,9 @@
 
                             <input class="form-control mb-3" type="text" placeholder="Email" required name="email"/>
                             <input class="form-control mb-3" type="password" placeholder="Password" required name="key"/>
-
                             <div class="d-grid gap-2 mb-3">
                                 <button class="btn btn-primary" type="submit">Sing In</button>
                             </div>
-
                             @if (ViewData["Message"] != null){
                                 <div class="form-group">
                                     <div class="alert alert-danger" role="alert">
@@ -40,7 +38,6 @@
                                     </div>
                                 </div>
                             }
-
                             New user? <a href="@Url.Action("Register", "Start")"> Sing Up</a>
                         </form>
                     </div>
